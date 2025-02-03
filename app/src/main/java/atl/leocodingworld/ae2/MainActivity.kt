@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -30,15 +31,15 @@ class MainActivity : ComponentActivity() {
 	}
 
 	private fun fetchSeries() {
-		CoroutineScope(Dispatchers.IO + CoroutineExceptionHandler{ _, throwable ->
-			throwable.printStackTrace()}).launch {
-			val call = getRetrofit().create(SerieApiService::class.java).getPopularSeries()
-			val seriesResult = call.body()
+		CoroutineScope(Dispatchers.IO).launch {
+			val call = getRetrofit().create(SerieApiService::class.java).getAllSeries()
+			val seriesResult: SerieResponse? = call.body()
 
 			runOnUiThread {
 				if (call.isSuccessful) {
-					val serieList = seriesResult?.toList()
-					displaySeries(serieList)
+					val serieList = seriesResult?: emptyList()
+					mloSeries.clear()
+					mloSeries.addAll(serieList)
 					adapter.notifyDataSetChanged()
 				} else {
 					showError()
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
 		}
 	}
 
-	private fun displaySeries(series: List<Serie>?) {
+	private fun displaySeries(series: List<Serie>) {
 		val adapter = SerieAdapter(series)
 		binding.rvSeries.layoutManager = LinearLayoutManager(this)
 		binding.rvSeries.adapter = adapter
@@ -71,13 +72,14 @@ class MainActivity : ComponentActivity() {
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
 
-//		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//			val systemBar = insets.getInsets((WindowInsetsCompat.Type.systemBars()))
-//			v.setPadding(systemBar.left, systemBar.top, systemBar.right, systemBar.bottom)
-//			insets
-//		}
 		this.initRecyclerView()
 		fetchSeries()
+
+		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+			val systemBar = insets.getInsets((WindowInsetsCompat.Type.systemBars()))
+			v.setPadding(systemBar.left, systemBar.top, systemBar.right, systemBar.bottom)
+			insets
+		}
 	}
 }
 
