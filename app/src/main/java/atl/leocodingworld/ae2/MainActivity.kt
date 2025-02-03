@@ -5,11 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import atl.leocodingworld.ae2.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineExceptionHandler
+import atl.leocodingworld.ae2.model.Serie
+import atl.leocodingworld.ae2.model.SerieResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,8 +30,10 @@ class MainActivity : ComponentActivity() {
 	}
 
 	private fun fetchSeries() {
+		Log.i("INFO", "Fuera")
 		CoroutineScope(Dispatchers.IO).launch {
-			val call = getRetrofit().create(SerieApiService::class.java).getAllSeries()
+			Log.i("INFO", "Entré")
+			val call = getRetrofit().create(SerieApiService::class.java).getAllSeries("series")
 			val seriesResult: SerieResponse? = call.body()
 
 			runOnUiThread {
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
 	}
 
 	private fun showError() {
-		Log.i("INFO", "Entré")
+
 		Toast.makeText(this, "Error al cargar películas", Toast.LENGTH_SHORT).show()
 	}
 
@@ -74,12 +75,12 @@ class MainActivity : ComponentActivity() {
 
 		this.initRecyclerView()
 		fetchSeries()
-
-		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-			val systemBar = insets.getInsets((WindowInsetsCompat.Type.systemBars()))
-			v.setPadding(systemBar.left, systemBar.top, systemBar.right, systemBar.bottom)
-			insets
-		}
+//
+//		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//			val systemBar = insets.getInsets((WindowInsetsCompat.Type.systemBars()))
+//			v.setPadding(systemBar.left, systemBar.top, systemBar.right, systemBar.bottom)
+//			insets
+//		}
 	}
 }
 

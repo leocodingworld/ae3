@@ -1,4 +1,4 @@
-package atl.leocodingworld.ae2
+package atl.leocodingworld.ae2.model
 
 data class Serie (
 	val id : Int,

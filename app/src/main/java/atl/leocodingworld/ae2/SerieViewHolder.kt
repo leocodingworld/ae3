@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 import atl.leocodingworld.ae2.databinding.ItemSerieBinding
+import atl.leocodingworld.ae2.model.Serie
 import com.squareup.picasso.Picasso
 
 class SerieViewHolder(view: View) : RecyclerView.ViewHolder(view) {

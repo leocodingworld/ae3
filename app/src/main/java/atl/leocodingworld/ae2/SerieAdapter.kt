@@ -3,6 +3,7 @@ package atl.leocodingworld.ae2
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import atl.leocodingworld.ae2.model.Serie
 
 class SerieAdapter(private val series: List<Serie>) : RecyclerView.Adapter<SerieViewHolder>() {
 
