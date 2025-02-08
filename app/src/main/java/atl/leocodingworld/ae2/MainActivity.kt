@@ -72,6 +72,7 @@ class MainActivity : ComponentActivity() {
 		enableEdgeToEdge()
 
 		binding = ActivityMainBinding.inflate(layoutInflater)
+		setContentView(binding.root)
 
 		this.initRecyclerView()
 		fetchSeries()
